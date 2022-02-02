@@ -1,0 +1,14 @@
+<template>
+    <lightning-card  title="Series List">
+    <lightning-accordion allow-multiple-sections-open={multiple}>
+        <template if:true={series}>
+                    <template for:each={series} for:item="ser">
+                        <li key={ser.Id}>
+                            <a onclick={handleSeriesclick} key={ser.Id}  data-name={ser.Name} data-id={ser.Id}>
+                            {ser.Name}
+                        </a></li>
+            </template>
+        </template>
+    </lightning-accordion>
+    </lightning-card>
+</template>

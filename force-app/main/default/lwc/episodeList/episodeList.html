@@ -1,0 +1,9 @@
+<template>
+        <template if:true={episodes}>
+                    <template for:each={episodes} for:item="epi">
+                        <li key={epi.Episode_Number__c}><a key={epi.Episode_Number__c}  data-name={epi.Name} data-id={ep.Id}>
+                            {epi.Season__c} {epi.Episode_Number__c}. {epi.Name}
+                        </a></li>
+            </template>
+        </template>
+</template>
