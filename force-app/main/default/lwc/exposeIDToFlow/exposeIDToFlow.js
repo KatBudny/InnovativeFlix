@@ -1,3 +1,33 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, wire, api } from 'lwc';
+import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
+import { FlowNavigationNextEvent} from 'lightning/flowSupport';
+import SERIES_MESSAGE from '@salesforce/messageChannel/SeriesID__c';
 
-export default class ExposeIDToFlow extends LightningElement {}
+export default class ExposeIDToFlow extends LightningElement {
+
+    subscription = null;
+    @api seriesid;
+    @wire(MessageContext)
+    messageContext;
+
+
+    connectedCallback() {
+
+      this.subscription = subscribe(
+          this.messageContext,
+          SERIES_MESSAGE,
+          (message) => {
+              this.handleSeriesPass(message);
+          });
+    }
+    disconnectedCallback() {
+      unsubscribe(this.subscription);
+      this.subscription = null;
+    }
+    handleSeriesPass(message) {
+        console.log(message);
+        this.seriesid = message.seriesid;     
+        const nextNav = new FlowNavigationNextEvent();   
+        this.dispatchEvent(nextNav);
+    }
+}
