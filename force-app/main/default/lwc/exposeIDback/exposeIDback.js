@@ -1,6 +1,8 @@
 import { LightningElement, wire, api } from 'lwc';
-import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
+import { publish, subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
+import { FlowNavigationBackEvent} from 'lightning/flowSupport';
 import SERIES_MESSAGE from '@salesforce/messageChannel/SeriesID__c';
+
 
 export default class ExposeIDToFlow extends LightningElement {
 
@@ -26,5 +28,7 @@ export default class ExposeIDToFlow extends LightningElement {
     handleSeriesPass(message) {
         console.log(message);
         this.seriesid = message.seriesid;     
+        const nextNav = new FlowNavigationBackEvent();   
+        this.dispatchEvent(nextNav);
     }
 }

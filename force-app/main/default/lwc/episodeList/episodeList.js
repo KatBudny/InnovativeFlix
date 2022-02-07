@@ -1,7 +1,7 @@
 import { LightningElement, wire, track } from 'lwc';
 import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
 import SERIES_MESSAGE from '@salesforce/messageChannel/SeriesID__c';
-import GetEpisodeID from '@salesforce/apex/GetEpisode.GetEpisodeID';
+import GetEpisodeList from '@salesforce/apex/GetEpisode.GetEpisodeList';
 
 export default class EpisodeList extends LightningElement {
 
@@ -17,9 +17,10 @@ export default class EpisodeList extends LightningElement {
     set seriesid(value) {
         this._seriesid = value;
 
-        GetEpisodeID({ recordId: value })
+        GetEpisodeList({ recordId: value })
         .then(data =>{
             console.log('id passed '+ value);
+            console.log(data);
             this.episodes = data;
         })
         .catch(error => {
