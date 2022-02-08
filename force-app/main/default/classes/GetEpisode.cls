@@ -1,7 +1,9 @@
 public with sharing class GetEpisode {
+
+    List<Episode__c> allEpisodes = [SELECT Id, Name, Season__c, Episode_Number__c from Episode__c where Series__c= :recordId order by Season__c, Episode_Number__c];
+
     @AuraEnabled
-    public static String GetEpisodeList(string recordId) {
-        List<Episode__c> allEpisodes = [SELECT Id, Name, Season__c, Episode_Number__c from Episode__c where Series__c= :recordId order by Season__c, Episode_Number__c];
+    public static String GetEpisodeList(string recordId) {        
         List<Decimal> seasons = new List<Decimal>();
         List<seasonWrapper> seasonWrap = new List<seasonWrapper>();
 
@@ -11,7 +13,7 @@ public with sharing class GetEpisode {
                 seasons.add(e.Season__c);
             }
         }
-
+        
         //sezony dobrze pobiera
         System.debug('sezony '+seasons);
         
@@ -29,12 +31,6 @@ public with sharing class GetEpisode {
         system.debug(JSONEpisodes);
         return JSONEpisodes;
     }
-
-    public static List<Episode__c> GetEpisodeDetails() {
-
-        //TODO: kwerenda
-        return [SELECT Name from Episode__c];
-    }
     private class seasonWrapper{
         private String season;
         private List<Episode__c> episodes;
@@ -42,6 +38,15 @@ public with sharing class GetEpisode {
         seasonWrapper( String season, List<Episode__c> episodes){
             this.season = season;
             this.episodes = episodes;
+        }
+    }
+    @AuraEnabled
+    public static Episode__c GetEpisodeDetails(string recordId) {
+
+        for(Episode e : allEpisodes){
+            if (e.Id = recordId) {
+                return e;                
+            }
         }
     }
 

@@ -1,12 +1,12 @@
 import { LightningElement, wire, track } from 'lwc';
-import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
+import { subscribe, unsubscribe, MessageContext, publish } from 'lightning/messageService';
 import SERIES_MESSAGE from '@salesforce/messageChannel/SeriesID__c';
+import EPISODE_MESSAGE from '@salesforce/messageChannel/EpisodeID__c';
 import GetEpisodeList from '@salesforce/apex/GetEpisode.GetEpisodeList';
 
 export default class EpisodeList extends LightningElement {
 
     subscription = null;
-    selectedProductId;
     _seriesid;
     @track seasons;
     @track error;
@@ -57,6 +57,14 @@ export default class EpisodeList extends LightningElement {
         console.log(message);
         this.seriesid = message.seriesid;        
         this.seriesname = message.seriesname;
-        this.selectedProductId=null;
+    }
+
+    handleSeriesclick(event){
+        console.log(event.target.dataset.id);
+        this.selectedID = event.target.dataset.id;
+        const message = {episodeid: this.selectedID};
+        console.log('do spakowania: '+JSON.stringify(message));
+        publish(this.messageContext, EPISODE_MESSAGE, message);
+
     }
 }

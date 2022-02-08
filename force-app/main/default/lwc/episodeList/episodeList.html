@@ -2,7 +2,7 @@
                         <template for:each={seasons} for:item="s">
                         {s.season}
                         <template for:each={s.episodes} for:item="epi">
-                        <li key={epi.Id}><a key={epi.Id} data-name={epi.Name} data-id={epi.Id}>
+                        <li key={epi.Id}><a key={epi.Id}  data-id={epi.Id} onclick={handleSeriesclick}>
                             {epi.Season__c}.{epi.Episode_Number__c}. {epi.Name}
                         </a></li>
                     </template>
