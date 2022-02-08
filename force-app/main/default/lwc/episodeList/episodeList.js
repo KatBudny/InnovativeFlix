@@ -8,7 +8,7 @@ export default class EpisodeList extends LightningElement {
     subscription = null;
     selectedProductId;
     _seriesid;
-    @track episodes;
+    @track seasons;
     @track error;
     
     get seriesid() {
@@ -19,9 +19,11 @@ export default class EpisodeList extends LightningElement {
 
         GetEpisodeList({ recordId: value })
         .then(data =>{
+            let result = JSON.parse(data);
             console.log('id passed '+ value);
             console.log(data);
-            this.episodes = data;
+            this.seasons = result;
+            console.log(result);
         })
         .catch(error => {
             this.error = error;
