@@ -1,9 +1,8 @@
-public with sharing class GetEpisode {
-
-    List<Episode__c> allEpisodes = [SELECT Id, Name, Season__c, Episode_Number__c from Episode__c where Series__c= :recordId order by Season__c, Episode_Number__c];
+public with sharing class GetEpisode {   
 
     @AuraEnabled
-    public static String GetEpisodeList(string recordId) {        
+    public static String GetEpisodeList(string recordId) {   
+        List<Episode__c> allEpisodes = [SELECT Id, Name, Season__c, Episode_Number__c from Episode__c where Series__c= :recordId order by Season__c, Episode_Number__c];     
         List<Decimal> seasons = new List<Decimal>();
         List<seasonWrapper> seasonWrap = new List<seasonWrapper>();
 
@@ -13,7 +12,7 @@ public with sharing class GetEpisode {
                 seasons.add(e.Season__c);
             }
         }
-        
+
         //sezony dobrze pobiera
         System.debug('sezony '+seasons);
         
@@ -24,7 +23,7 @@ public with sharing class GetEpisode {
                     wrapEpisodes.add(e);
                 }
             }
-            seasonWrapper wrappedSeason = new seasonWrapper(String.valueOf(s), wrapEpisodes);
+            seasonWrapper wrappedSeason = new seasonWrapper('Season '+String.valueOf(s), wrapEpisodes);
             seasonWrap.add(wrappedSeason);
         }
         String JSONEpisodes = JSON.serialize(seasonWrap);
@@ -40,14 +39,8 @@ public with sharing class GetEpisode {
             this.episodes = episodes;
         }
     }
-    @AuraEnabled
+        @AuraEnabled
     public static Episode__c GetEpisodeDetails(string recordId) {
-
-        for(Episode e : allEpisodes){
-            if (e.Id = recordId) {
-                return e;                
-            }
-        }
+        return [SELECT Id, Name, Season__c, Episode_Number__c from Episode__c where Id= :recordId];  
     }
-
 } 
