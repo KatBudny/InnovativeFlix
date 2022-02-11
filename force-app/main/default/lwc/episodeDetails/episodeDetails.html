@@ -1,0 +1,9 @@
+<template>
+    <template if:true={episode}>
+        <template if:true={showDetails}>
+            <lightning-card  title={episode.Name}></lightning-card>
+            <p>Nazwa: {episode.Name}</p>        
+    </template>
+    <template if:false={showDetails}></template>
+    </template>
+</template>

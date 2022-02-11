@@ -2,14 +2,14 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
     <isExposed>true</isExposed>
-
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="seriesid" type="String" role="outputOnly"/>
+            <property name="episodeID" label="Episode ID" type="String" role="inputOnly"/>
+            <property name="seriesID" label="Series ID" type="String" role="inputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

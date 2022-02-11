@@ -1,0 +1,12 @@
+<template>
+    <template if:true={reviews}>
+        <template if:true={showDetails}>
+            <template for:each={reviews} for:item="rev">
+                <div key={rev.Id}>
+                    <p>{rev.Score__c}</p>
+                    <p>{rev.Description__c}</p>
+                </div>
+    </template>
+    </template>
+    </template>
+</template>

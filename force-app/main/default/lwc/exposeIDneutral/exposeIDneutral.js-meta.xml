@@ -9,7 +9,7 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="seriesid" type="String" role="outputOnly"/>
+            <property name="episodeID" type="String" role="inputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

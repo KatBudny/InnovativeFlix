@@ -3,7 +3,7 @@
                         <template for:each={seasons} for:item="s">
                             <lightning-accordion-section name={s.season} label={s.season} key={s.season}>                        
                         <template for:each={s.episodes} for:item="epi">
-                        <li key={epi.Id}><a key={epi.Id}  data-id={epi.Id} onclick={handleSeriesclick}>
+                        <li key={epi.Id}><a key={epi.Id}  data-id={epi.Id} onclick={handleEpisodeclick}>
                             {epi.Episode_Number__c}. {epi.Name}
                         </a></li>
                     </template>

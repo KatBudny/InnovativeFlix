@@ -3,6 +3,7 @@ import { subscribe, unsubscribe, MessageContext, publish } from 'lightning/messa
 import SERIES_MESSAGE from '@salesforce/messageChannel/SeriesID__c';
 import EPISODE_MESSAGE from '@salesforce/messageChannel/EpisodeID__c';
 import GetEpisodeList from '@salesforce/apex/GetEpisode.GetEpisodeList';
+import EpiList_message from '@salesforce/messageChannel/EpisodeListRefresh__c';
 
 export default class EpisodeList extends LightningElement {
 
@@ -41,13 +42,19 @@ export default class EpisodeList extends LightningElement {
     @wire(MessageContext)
     messageContext;
     connectedCallback() {
+        this.subscription = subscribe(
+            this.messageContext,
+            SERIES_MESSAGE,
+            (message) => {
+                this.handleSeriesPass(message);
+            });
+        this.subscription = subscribe(
+            this.messageContext,
+            EpiList_message,
+            (message) => {
+                this.handleRefresh(message);
+            });
 
-      this.subscription = subscribe(
-          this.messageContext,
-          SERIES_MESSAGE,
-          (message) => {
-              this.handleSeriesPass(message);
-          });
     }
     disconnectedCallback() {
       unsubscribe(this.subscription);
@@ -59,12 +66,29 @@ export default class EpisodeList extends LightningElement {
         this.seriesname = message.seriesname;
     }
 
-    handleSeriesclick(event){
+    handleEpisodeclick(event){
         console.log(event.target.dataset.id);
         this.selectedID = event.target.dataset.id;
-        const message = {episodeid: this.selectedID};
+        const message = {episodeID: this.selectedID};
         console.log('do spakowania: '+JSON.stringify(message));
         publish(this.messageContext, EPISODE_MESSAGE, message);
 
+    }
+    handleRefresh(message){
+        console.log('wchodzi w metode handle')
+        console.log(message.seriesid)
+        if(message.action==='refresh'){
+        GetEpisodeList({ recordId: message.seriesid })
+        .then(data =>{
+            console.log('id passed '+ message.seriesid );
+            let result = JSON.parse(data);
+            console.log(data);
+            this.seasons = result;
+            console.log(result);
+        })
+        .catch(error => {
+            this.error = error;
+        })
+        }
     }
 }

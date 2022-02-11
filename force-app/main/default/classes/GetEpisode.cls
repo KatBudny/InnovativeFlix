@@ -26,9 +26,9 @@ public with sharing class GetEpisode {
             seasonWrapper wrappedSeason = new seasonWrapper('Season '+String.valueOf(s), wrapEpisodes);
             seasonWrap.add(wrappedSeason);
         }
-        String JSONEpisodes = JSON.serialize(seasonWrap);
-        system.debug(JSONEpisodes);
-        return JSONEpisodes;
+        String jsonEpisodes = JSON.serialize(seasonWrap);
+        system.debug(jsonEpisodes);
+        return jsonEpisodes;
     }
     private class seasonWrapper{
         private String season;

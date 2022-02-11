@@ -2,6 +2,7 @@ import { LightningElement, wire, track } from 'lwc';
 import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
 import SERIES_MESSAGE from '@salesforce/messageChannel/SeriesID__c';
 import GetSeriesDetails from '@salesforce/apex/GetSeries.GetSeriesDetails';
+import EpiList_message from '@salesforce/messageChannel/EpisodeListRefresh__c';
 
 export default class SeriesDetails extends LightningElement {
 
@@ -24,11 +25,18 @@ export default class SeriesDetails extends LightningElement {
         .catch(error => {
             this.error = error;
         })
+
     }
 
     @wire(MessageContext)
     messageContext;
     connectedCallback() {
+        this.subscription = subscribe(
+            this.messageContext,
+            EpiList_message,
+            (message) => {
+                this.handleRefresh(message);
+            });
 
       this.subscription = subscribe(
           this.messageContext,
@@ -44,5 +52,20 @@ export default class SeriesDetails extends LightningElement {
     handleSeriesPass(message) {
         console.log(message);
         this.seriesid = message.seriesid;        
+    }
+    handleRefresh(message){
+        console.log('wchodzi w metode handle')
+        console.log(message.seriesid)
+        if(message.action==='refresh'){
+            GetSeriesDetails({ recordId: message.seriesid })
+            .then(data =>{
+                console.log('id passed '+ message.seriesid);
+                console.log(data);
+                this.series = data;
+            })
+            .catch(error => {
+                this.error = error;
+            })
+        }
     }
 }
