@@ -18,9 +18,6 @@ export default class EpisodeDetails extends LightningElement {
 
         GetEpisodeDetails({ recordId: value })
         .then(data =>{
-            console.log('id passed '+ value);
-            console.log('episod odebrany');
-            console.log(data);
             this.episode = data;
         })
         .catch(error => {
@@ -43,18 +40,14 @@ export default class EpisodeDetails extends LightningElement {
       this.subscription = null;
     }
     handleEpisodePass(message) {
-        console.log(message);
         this.episodeID = message.episodeID;
         if(message.episodeID == null){
-            console.log('chowa')
             this.showDetails = false;
         }
         else{
-            console.log('odkrywa')
             this.showDetails = true;
             
         }
-        console.log(showDetails).value;
 
     }
 }

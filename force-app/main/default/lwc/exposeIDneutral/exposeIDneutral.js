@@ -24,7 +24,6 @@ export default class ExposeIDToFlow extends LightningElement {
       this.subscription = null;
     }
     handleSeriesPass(message) {
-        console.log(message);
         this.seriesid = message.seriesid;     
     }
 }

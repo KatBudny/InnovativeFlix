@@ -29,8 +29,6 @@ export default class EpisodeRefreshRequest extends LightningElement {
     connectedCallback(){
         const messageList = {action: 'refresh', seriesid: this.seriesID };
         const messageEpi = {episodeID: this.episodeID};
-        console.log(messageEpi);
-        console.log(messageList);
         publish(this.messageContext, EpiList_message, messageList);
         publish(this.messageContext, EPISODE_MESSAGE, messageEpi);
         const navigateNextEvent = new FlowNavigationNextEvent();

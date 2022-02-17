@@ -18,8 +18,6 @@ export default class SeriesDetails extends LightningElement {
 
         GetSeriesDetails({ recordId: value })
         .then(data =>{
-            console.log('id passed '+ value);
-            console.log(data);
             this.series = data;
         })
         .catch(error => {
@@ -50,17 +48,12 @@ export default class SeriesDetails extends LightningElement {
       this.subscription = null;
     }
     handleSeriesPass(message) {
-        console.log(message);
         this.seriesid = message.seriesid;        
     }
     handleRefresh(message){
-        console.log('wchodzi w metode handle')
-        console.log(message.seriesid)
         if(message.action==='refresh'){
             GetSeriesDetails({ recordId: message.seriesid })
             .then(data =>{
-                console.log('id passed '+ message.seriesid);
-                console.log(data);
                 this.series = data;
             })
             .catch(error => {

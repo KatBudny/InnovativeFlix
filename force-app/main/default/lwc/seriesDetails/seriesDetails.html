@@ -1,12 +1,26 @@
 <template>
+    <template if:false={series}>Pick series from the list to the right.</template>
     <template if:true={series}>
-        {series.Name}
+        <lightning-card  title={series.Name}>
+            <template if:true={series.Logo_URL__c}>
+                <div class="logo"><img src={series.Logo_URL__c} width="200" height="auto"></div></template>
+                <div class="details">        
+                    <p>Genre: {series.Genre__c}</p>
+                    <p>{series.Description__c}</p>                   
+                </div>
+            
+        <template if:true={series.Trailer_URL__c}>
+        <iframe width="560" height="315" src={series.Trailer_URL__c} title="YouTube video player" 
+        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></template>
+
+        <lightning-card  title="User Reviews">
             <template for:each={series.Reviews__r} for:item="rev">
                 <div key={rev.Id}>
-                    <p>{rev.Score__c}</p>
+                    <p>Score: {rev.Score__c}</p>
                     <p>{rev.Score_Description__c}</p>
                 </div>
             </template>
+        </lightning-card>
+    </lightning-card>
         </template>
     </template>      
-</template>

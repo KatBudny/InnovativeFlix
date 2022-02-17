@@ -21,10 +21,7 @@ export default class EpisodeList extends LightningElement {
         GetEpisodeList({ recordId: value })
         .then(data =>{
             let result = JSON.parse(data);
-            console.log('id passed '+ value);
-            console.log(data);
             this.seasons = result;
-            console.log(result);
         })
         .catch(error => {
             this.error = error;
@@ -44,16 +41,17 @@ export default class EpisodeList extends LightningElement {
     connectedCallback() {
         this.subscription = subscribe(
             this.messageContext,
-            SERIES_MESSAGE,
-            (message) => {
-                this.handleSeriesPass(message);
-            });
-        this.subscription = subscribe(
-            this.messageContext,
             EpiList_message,
             (message) => {
                 this.handleRefresh(message);
             });
+        this.subscription = subscribe(
+            this.messageContext,
+            SERIES_MESSAGE,
+            (message) => {
+                this.handleSeriesPass(message);
+            });
+
 
     }
     disconnectedCallback() {
@@ -61,30 +59,22 @@ export default class EpisodeList extends LightningElement {
       this.subscription = null;
     }
     handleSeriesPass(message) {
-        console.log(message);
         this.seriesid = message.seriesid;        
         this.seriesname = message.seriesname;
     }
 
     handleEpisodeclick(event){
-        console.log(event.target.dataset.id);
         this.selectedID = event.target.dataset.id;
         const message = {episodeID: this.selectedID};
-        console.log('do spakowania: '+JSON.stringify(message));
         publish(this.messageContext, EPISODE_MESSAGE, message);
 
     }
     handleRefresh(message){
-        console.log('wchodzi w metode handle')
-        console.log(message.seriesid)
         if(message.action==='refresh'){
         GetEpisodeList({ recordId: message.seriesid })
         .then(data =>{
-            console.log('id passed '+ message.seriesid );
             let result = JSON.parse(data);
-            console.log(data);
             this.seasons = result;
-            console.log(result);
         })
         .catch(error => {
             this.error = error;

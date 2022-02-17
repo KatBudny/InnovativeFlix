@@ -1,8 +1,10 @@
 <template>
     <template if:true={episode}>
         <template if:true={showDetails}>
-            <lightning-card  title={episode.Name}></lightning-card>
-            <p>Nazwa: {episode.Name}</p>        
+            <lightning-card  title={episode.Name}>
+            <p>{episode.Description__c}</p>
+            <template if:false={episode.Description__c}><p>No description for episode found in the database.</p></template>
+        </lightning-card>        
     </template>
     <template if:false={showDetails}></template>
     </template>

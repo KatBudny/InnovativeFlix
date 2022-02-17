@@ -9,16 +9,14 @@ import refresh_message from '@salesforce/messageChannel/SeriesRefresh__c';
 export default class seriesList extends LightningElement {
     @track multiple = true;
     @track series;
+    isLoading = false;
     @wire(MessageContext) messageContext;
 
     handleSeriesclick(event){        
-        console.log(event.target.dataset.name);
-        console.log(event.target.dataset.id);
         this.selectedID = event.target.dataset.id;
         this.selectedName = event.target.dataset.name;
         const message = {seriesid: this.selectedID};
         const messageEpi = {episodeID: null};
-        console.log('do spakowania: '+JSON.stringify(message));
         publish(this.messageContext, SERIES_MESSAGE, message);
         publish(this.messageContext, EPISODE_MESSAGE, messageEpi);
     }
@@ -27,12 +25,12 @@ export default class seriesList extends LightningElement {
     connectedCallback() {
         GetSeriesList()
         .then(data =>{
-            console.log(data);
             this.series = data;
+            const message = {seriesid: data[0].Id};
+            publish(this.messageContext, SERIES_MESSAGE, message);
         })
         .catch(error => {
             this.error = error;
-            console.log('error ' +error);
         })
 
       this.subscription = subscribe(
@@ -48,18 +46,17 @@ export default class seriesList extends LightningElement {
     }
  
     handleRefresh(message) {
-        console.log('wchodzi w metode handle')
         if(message.action==='refresh'){
             GetSeriesList()
             .then(data =>{
-                console.log(data);
                 this.series = data;
             })
             .catch(error => {
                 this.error = error;
-                console.log('error ' +error);
             })
         }
-
+    }
+    handleToggleSpinner(e){
+        this.isLoading = e.detail;
     }
 }

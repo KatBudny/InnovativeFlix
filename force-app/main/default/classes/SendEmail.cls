@@ -11,7 +11,6 @@ global abstract class SendEmail {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();  
         
         mail.setToAddresses(contact);
-        System.debug('adres '+contact);
        
         OrgWideEmailAddress[] owea = [select Id from OrgWideEmailAddress];
         if ( owea.size() > 0 ) {
@@ -28,10 +27,8 @@ global abstract class SendEmail {
         //mail.setSenderDisplayName('Innovativeflix');
         mail.setSubject('New series you may like available!');  
         mail.setHtmlBody(mailBody); 
-        System.debug('treść '+mailBody);
         List<Messaging.SendEmailResult> results = 
         Messaging.sendEmail(new Messaging.Email[] { mail });
-            system.debug('Marcin chciał debuga tutaj. '+results);
             if (!results.get(0).isSuccess()) {
                 System.StatusCode statusCode = results.get(0).getErrors()[0].getStatusCode();
                 String errorMessage = results.get(0).getErrors()[0].getMessage();

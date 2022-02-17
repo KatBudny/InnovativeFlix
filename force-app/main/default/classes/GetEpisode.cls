@@ -13,8 +13,6 @@ public with sharing class GetEpisode {
             }
         }
 
-        //sezony dobrze pobiera
-        System.debug('sezony '+seasons);
         
         for(Decimal s: seasons){
             List <Episode__c> wrapEpisodes = new List <Episode__c>();
@@ -27,7 +25,6 @@ public with sharing class GetEpisode {
             seasonWrap.add(wrappedSeason);
         }
         String jsonEpisodes = JSON.serialize(seasonWrap);
-        system.debug(jsonEpisodes);
         return jsonEpisodes;
     }
     private class seasonWrapper{
@@ -41,6 +38,6 @@ public with sharing class GetEpisode {
     }
         @AuraEnabled
     public static Episode__c GetEpisodeDetails(string recordId) {
-        return [SELECT Id, Name, Season__c, Episode_Number__c from Episode__c where Id= :recordId];  
+        return [SELECT Id, Name, Season__c, Episode_Number__c, Description__c from Episode__c where Id= :recordId];  
     }
 } 
